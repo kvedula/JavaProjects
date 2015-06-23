@@ -1,0 +1,90 @@
+import apcs.*;
+
+public class FlappyBird {
+
+	static int birdY = 50;
+	static int birdYSpeed = 0;
+	static int pipeX = 500;
+	//static int pipeY = Window.rollDice(10);
+
+	public static void main(String[] args) {
+
+		while (true) {
+			Window.out.background("sky blue");
+
+			pipeX = pipeX - 5;
+			drawPipe(250, pipeX, 30);
+
+			if (pipeX < -20) {
+				pipeX = 530;
+			}
+
+			// change the position of the bird
+			birdY = birdY + birdYSpeed;
+			birdYSpeed = birdYSpeed + 1;
+
+			// draw the bird
+			drawBird(50, birdY);
+
+			// if the space bar is pressed...
+			if (Window.key.pressed("space")) {
+				// then make the bird's speed negative (i.e. going up)
+				birdYSpeed = -10;
+			}
+
+			// check if bird is below
+			if (birdY > 490 || birdY < 10) {
+				gameOver();
+			}
+
+			// refresh the image at the end of the loop
+			Window.frame();
+		}
+
+	}
+
+	private static void drawPipe(int gap, int x, int width) {
+		Window.out.color("Green");
+		Window.out.rectangle(x, ((gap - 50) / 2), width, (gap - 50));
+		Window.out.rectangle(x, (500 - ((500 - (gap + 50)) / 2)), width,
+				((500 - (gap + 50))));
+
+	}
+
+	private static void gameOver() {
+		Window.out.font("Ariel", 40);
+		Window.out.color("gray");
+		Window.out.print("Game Over", 150, 250);
+		Window.frame(500);
+		birdY = 50;
+		birdYSpeed = 0;
+		pipeX = 530;
+
+	}
+
+	private static void drawBird(int xPos, int yPos) {
+		// draw outline
+		Window.out.color("black");
+		Window.out.oval(xPos, yPos, 30, 23);
+		Window.out.color(196, 179, 102);
+		Window.out.oval(xPos, yPos, 28, 21);
+		Window.out.color("black");
+		Window.out.circle(xPos + 5, yPos - 5, 3);
+
+		// draw beak
+		Window.out.color("black");
+		Window.out.oval(xPos + 15, yPos, 11, 8);
+		Window.out.color("orange");
+		Window.out.oval(xPos + 15, yPos, 10, 7);
+		Window.out.color("black");
+		Window.out.oval(xPos + 15, yPos + 7, 11, 8);
+		Window.out.color("orange");
+		Window.out.oval(xPos + 15, yPos + 7, 10, 7);
+
+		Window.out.color("black");
+		Window.out.circle(xPos - 3, yPos + 1, 6);
+		Window.out.color(209, 207, 98);
+		Window.out.circle(xPos - 3, yPos + 1, 5);
+	}
+
+}
